@@ -1,0 +1,34 @@
+
+
+### recupera um usuario
+GET http://localhost:3000/users/e8448c42-225e-4c75-a9b9-a189f1515632 
+content-type: application/json
+###
+
+### cria um novo usuario
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Teste 3",
+  "email": "teste@emal.com",
+  "password" : "1234568"
+}
+
+###
+
+### deleta um usuario
+DELETE http://localhost:3000/users/985f7413-710b-42c1-b0c6-c5c6fbc90464
+Content-Type: application/json
+
+###
+
+### atualiza um usuario
+
+PUT http://localhost:3000/users/e8448c42-225e-4c75-a9b9-a189f1515632
+Content-Type: application/json
+
+{ 
+  "name": "Artur Procopio",
+  "password":"trutinha"
+}
