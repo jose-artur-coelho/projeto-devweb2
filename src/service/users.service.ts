@@ -13,15 +13,18 @@ export class UsersService {
   }
 
   async createUser(dto: CreateUserDTO) {
-    const password = await this.passwordManager.encrypt(dto.password);
+    const encryptedPassword = await this.passwordManager.encrypt(dto.password);
 
-    const createdUser = await this.usersRepository.create({ ...dto, password });
+    const createdUser = await this.usersRepository.create({
+      ...dto,
+      password: encryptedPassword,
+    });
 
     return createdUser;
   }
 
   async updateUser(id: string, dto: UpdateUserDTO) {
-    const password = dto.password
+    const encryptedPassword = dto.password
       ? await this.passwordManager.encrypt(dto.password)
       : null;
 
