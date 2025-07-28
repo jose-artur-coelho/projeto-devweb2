@@ -1,7 +1,7 @@
 
 
 ### recupera um usuario
-GET http://localhost:3000/users/e8448c42-225e-4c75-a9b9-a189f1515632 
+GET http://localhost:3000/users/94867ddb-60fd-4bde-9fc9-0738df6a4f87
 content-type: application/json
 ###
 
@@ -18,17 +18,17 @@ Content-Type: application/json
 ###
 
 ### deleta um usuario
-DELETE http://localhost:3000/users/985f7413-710b-42c1-b0c6-c5c6fbc90464
+DELETE http://localhost:3000/users/:id
 Content-Type: application/json
 
 ###
 
 ### atualiza um usuario
 
-PUT http://localhost:3000/users/e8448c42-225e-4c75-a9b9-a189f1515632
+PUT http://localhost:3000/users/94867ddb-60fd-4bde-9fc9-0738df6a4f87
 Content-Type: application/json
 
 { 
-  "name": "Artur Procopio",
-  "password":"trutinha"
+  "email": "artur@email.com"
+
 }
