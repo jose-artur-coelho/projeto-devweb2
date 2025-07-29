@@ -1,7 +1,7 @@
-import { UsersRepository } from "../db/repository/users/users.repository";
-import { passwordManager } from "../lib/password-manager";
-import { CreateUserDTO } from "../types/dto/create-user.dto";
-import { UpdateUserDTO } from "../types/dto/update-user.dto";
+import { UsersRepository } from '../db/repository/users/users.repository';
+import { passwordManager } from '../lib/password-manager';
+import { CreateUserDTO } from '../types/dto/create-user.dto';
+import { UpdateUserDTO } from '../types/dto/update-user.dto';
 
 export class UsersService {
   private readonly usersRepository: UsersRepository;
