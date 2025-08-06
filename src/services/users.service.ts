@@ -1,19 +1,17 @@
 import { UsersRepository } from '../db/repository/users/users.repository';
-import { passwordManager } from '../lib/password-manager';
 import { CreateUserDTO } from '../types/dto/create-user.dto';
 import { UpdateUserDTO } from '../types/dto/update-user.dto';
+import { hash, compare } from 'bcrypt';
 
 export class UsersService {
   private readonly usersRepository: UsersRepository;
-  private readonly passwordManager: passwordManager;
 
   constructor(usersRepository: UsersRepository) {
     this.usersRepository = usersRepository;
-    this.passwordManager = new passwordManager();
   }
 
   async createUser(dto: CreateUserDTO) {
-    const encryptedPassword = await this.passwordManager.encrypt(dto.password);
+    const encryptedPassword = await hash(dto.password, 6);
 
     const createdUser = await this.usersRepository.create({
       ...dto,
@@ -25,7 +23,7 @@ export class UsersService {
 
   async updateUser(id: string, dto: UpdateUserDTO) {
     const encryptedPassword = dto.password
-      ? await this.passwordManager.encrypt(dto.password)
+      ? await hash(dto.password, 6)
       : undefined;
 
     const updatedUser = await this.usersRepository.update(id, {

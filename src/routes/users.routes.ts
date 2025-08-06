@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { UsersService } from '../service/users.service';
+import { UsersService } from '../services/users.service';
 import { PrismaUsersRepository } from '../db/repository/users/prisma-users.repository';
 import { validateData } from '../middlewares/validate-data.middleware';
 import { createUserSchema } from '../types/dto/create-user.dto';
@@ -9,7 +9,7 @@ const usersRoutes = express.Router();
 
 const usersService = new UsersService(new PrismaUsersRepository());
 
-usersRoutes.get('/:id', async (req: Request, res: Response) => {
+usersRoutes.get('/', async (req: Request, res: Response) => {
   const id = req.params.id;
   const user = await usersService.getUser(id);
   res.status(200).json(user);
