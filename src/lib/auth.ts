@@ -5,11 +5,11 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'adicionar verificação do .env';
 
-export class authService {
-  generateToken(userId: string, role: string) {
+export class auth {
+  static generateToken(userId: string, role: string) {
     return jwt.sign({ id: userId, role }, JWT_SECRET, { expiresIn: '1h' });
   }
-  verifyToken(token: string) {
+  static verifyToken(token: string) {
     return jwt.verify(token, JWT_SECRET);
   }
 }
