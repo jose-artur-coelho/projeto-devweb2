@@ -13,9 +13,38 @@ model User {
   email    String @unique
   password String
   role     Role   @default(USER)
+  goats    Goat[]
+  cows     Cow[]
+}
+
+model Cow {
+  id        String   @id @default(uuid())
+  name      String
+  owner     User
+  race      CowRace
+  birthDate DateTime
+}
+
+model Goat {
+  id        String   @id @default(uuid())
+  name      String
+  owner     User
+  race      GoatRace
+  birthDate DateTime
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+enum CowRace {
+  HOLANDESA
+  JERSEY
+  GIR
+  GIROLANDO
+}
+
+enum GoatRace {
+
 }
