@@ -11,7 +11,7 @@ export const createUserSchema = z.object({
     .string({ error: 'O campo password é obrigatório' })
     .min(3, { error: 'O campo password não pode ter menos de 8 caracteres.' }),
 
-  role: 'USER',
+  role: z.string().default('USER'),
 });
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
