@@ -1,16 +1,14 @@
 import { UsersRepository } from '../db/repository/users/users.repository';
-import { CreateUserDTO } from '../types/dto/create-user.dto';
-import { UpdateUserDTO } from '../types/dto/update-user.dto';
-import { hash, compare } from 'bcrypt';
+import { CreateUserDTO } from '../models/dto/user/create-user.dto';
+import { UpdateUserDTO } from '../models/dto/user/update-user.dto';
+import { hash } from 'bcrypt';
 
 export class UsersService {
-  private readonly usersRepository: UsersRepository;
-
-  constructor(usersRepository: UsersRepository) {
+  constructor(private readonly usersRepository: UsersRepository) {
     this.usersRepository = usersRepository;
   }
 
-  async createUser(dto: CreateUserDTO) {
+  async create(dto: CreateUserDTO) {
     const encryptedPassword = await hash(dto.password, 6);
 
     const createdUser = await this.usersRepository.create({
@@ -21,12 +19,17 @@ export class UsersService {
     return createdUser;
   }
 
-  async updateUser(id: string, dto: UpdateUserDTO) {
+  async update(id: string, dto: UpdateUserDTO) {
+    const user = this.usersRepository.findById(id);
+    if (!user) {
+      throw new Error('Usuário não encontrado.');
+    }
+
     const encryptedPassword = dto.password
       ? await hash(dto.password, 6)
       : undefined;
 
-    const updatedUser = await this.usersRepository.update(id, {
+    const updatedUser = await this.usersRepository.updateById(id, {
       ...dto,
       password: encryptedPassword,
     });
@@ -34,12 +37,20 @@ export class UsersService {
     return updatedUser;
   }
 
-  async getUser(id: string) {
-    const user = await this.usersRepository.get(id);
+  async find(id: string) {
+    const user = await this.usersRepository.findById(id);
+    if (!user) {
+      throw new Error('Usuário não encontrado.');
+    }
     return user;
   }
 
-  deleteUser(id: string) {
-    this.usersRepository.delete(id);
+  async findAll() {
+    const users = await this.usersRepository.findAll();
+    return users;
+  }
+
+  async delete(id: string) {
+    this.usersRepository.deleteById(id);
   }
 }

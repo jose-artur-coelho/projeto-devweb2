@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { CreateUserDTO } from '../../../types/dto/create-user.dto';
-import { User } from '../../../types/User';
+import { CreateUserDTO } from '../../../models/dto/user/create-user.dto';
+import { User } from '../../../models/user';
 import { UsersRepository } from './users.repository';
 import prisma from '../../prisma';
-import { UpdateUserDTO } from '../../../types/dto/update-user.dto';
+import { UpdateUserDTO } from '../../../models/dto/user/update-user.dto';
 
 export class PrismaUsersRepository implements UsersRepository {
   private readonly prisma: PrismaClient = prisma;
@@ -15,7 +15,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return user;
   }
 
-  async update(id: string, dto: UpdateUserDTO): Promise<User> {
+  async updateById(id: string, dto: UpdateUserDTO): Promise<User> {
     const user = await this.prisma.user.update({
       where: {
         id,
@@ -25,7 +25,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return user;
   }
 
-  async get(id: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
@@ -34,7 +34,21 @@ export class PrismaUsersRepository implements UsersRepository {
     return user;
   }
 
-  async delete(id: string): Promise<void> {
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany();
+    return users;
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
+  async deleteById(id: string): Promise<void> {
     await this.prisma.user.delete({
       where: {
         id,

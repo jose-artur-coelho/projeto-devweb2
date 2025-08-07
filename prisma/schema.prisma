@@ -20,17 +20,19 @@ model User {
 model Cow {
   id        String   @id @default(uuid())
   name      String
-  owner     User
+  owner     User     @relation(fields: [userId], references: [id])
   race      CowRace
   birthDate DateTime
+  userId    String
 }
 
 model Goat {
   id        String   @id @default(uuid())
   name      String
-  owner     User
+  owner     User     @relation(fields: [userId], references: [id])
   race      GoatRace
   birthDate DateTime
+  userId    String
 }
 
 enum Role {
@@ -46,5 +48,8 @@ enum CowRace {
 }
 
 enum GoatRace {
-
+  BOER
+  SAANEN
+  ALPINA
+  ANGLO
 }

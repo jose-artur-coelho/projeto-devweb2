@@ -1,45 +1,26 @@
-import express, { Request, Response } from 'express';
-import { UsersService } from '../services/users.service';
-import { PrismaUsersRepository } from '../db/repository/users/prisma-users.repository';
+import express from 'express';
 import { validateData } from '../middlewares/validate-data.middleware';
-import { createUserSchema } from '../types/dto/create-user.dto';
-import { updateUserSchema } from '../types/dto/update-user.dto';
+import { createUserSchema } from '../models/dto/user/create-user.dto';
+import { updateUserSchema } from '../models/dto/user/update-user.dto';
+import { authenticate } from '../middlewares/authenticate.middleware';
+import { usersController } from '../controllers/users.controller';
+import { authorize } from '../middlewares/authorize.middleware';
 
 const usersRoutes = express.Router();
 
-const usersService = new UsersService(new PrismaUsersRepository());
+usersRoutes.get('/:id', authenticate, usersController.retrieve);
 
-usersRoutes.get('/', async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const user = await usersService.getUser(id);
-  res.status(200).json(user);
-});
+usersRoutes.get('/', authenticate, authorize, usersController.retrieveAll);
 
-usersRoutes.post(
-  '/',
-  validateData(createUserSchema),
-  async (req: Request, res: Response) => {
-    const newUser = req.body;
-    const user = await usersService.createUser(newUser);
-    res.status(201).json(user);
-  }
-);
+usersRoutes.post('/', validateData(createUserSchema), usersController.create);
 
 usersRoutes.put(
-  '/:id',
+  '/',
   validateData(updateUserSchema),
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const newData = req.body;
-    const updatedUser = await usersService.updateUser(id, newData);
-    res.status(200).json(updatedUser);
-  }
+  authenticate,
+  usersController.update
 );
 
-usersRoutes.delete('/:id', (req: Request, res: Response) => {
-  const id = req.params.id;
-  usersService.deleteUser(id);
-  res.send(204).json();
-});
+usersRoutes.delete('/', authenticate, usersController.delete);
 
 export default usersRoutes;

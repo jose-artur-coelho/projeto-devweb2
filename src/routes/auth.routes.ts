@@ -1,6 +1,10 @@
-import express, { Request, Response } from 'express';
-import { UsersService } from '../services/users.service';
-import { PrismaUsersRepository } from '../db/repository/users/prisma-users.repository';
+import express from 'express';
+import { validateData } from '../middlewares/validate-data.middleware';
+import { loginSchema } from '../models/dto/auth/login.dto';
+import { authController } from '../controllers/auth.controller';
 
-const usersRoutes = express.Router();
-const usersService = new UsersService(new PrismaUsersRepository());
+const authRoutes = express.Router();
+
+authRoutes.post('/login', validateData(loginSchema), authController.login);
+
+export default authRoutes;

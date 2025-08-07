@@ -1,24 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
-import { auth } from '../lib/auth';
+import { verifyToken } from '../lib/auth';
 
-export const authenticate = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {
     return res
       .status(401)
-      .json({ message: 'Access denied. No token provided.' });
+      .json({ message: 'Acesso negado. Nenhum token foi enviado.' });
   }
 
   try {
-    const decoded = auth.verifyToken(token);
-    (req as any).user = decoded;
+    const decoded = verifyToken(token);
+    req.user = decoded;
     next();
   } catch (err) {
-    res.status(400).json({ message: 'Invalid token.' });
+    res.status(400).json({ message: 'Token inválido.' });
   }
-};
+}

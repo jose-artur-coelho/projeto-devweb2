@@ -7,7 +7,7 @@ export function globalErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.error('🔥 Erro capturado:', err);
+  console.error('Erro capturado:', err);
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {

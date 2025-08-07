@@ -1,10 +1,12 @@
-import { CreateUserDTO } from '../../../types/dto/create-user.dto';
-import { UpdateUserDTO } from '../../../types/dto/update-user.dto';
-import { User } from '../../../types/User';
+import { CreateUserDTO } from '../../../models/dto/user/create-user.dto';
+import { UpdateUserDTO } from '../../../models/dto/user/update-user.dto';
+import { User } from '../../../models/user';
 
 export interface UsersRepository {
   create(dto: CreateUserDTO): Promise<User>;
-  update(id: string, dto: UpdateUserDTO): Promise<User>;
-  get(id: string): Promise<User | null>;
-  delete(id: string): void;
+  updateById(id: string, dto: UpdateUserDTO): Promise<User>;
+  findById(id: string): Promise<User | null>;
+  findAll(): Promise<User[]>;
+  findByEmail(email: string): Promise<User | null>;
+  deleteById(id: string): void;
 }
