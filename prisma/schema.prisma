@@ -8,31 +8,67 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
-  role     Role   @default(USER)
-  goats    Goat[]
-  cows     Cow[]
+  id          String       @id @default(uuid())
+  name        String
+  email       String       @unique
+  password    String
+  role        Role         @default(USER)
+  goats       Goat[]
+  cows        Cow[]
+  cowsUpdates CowUpdate[]
+  goatUpdates GoatUpdate[]
+  costs       DailyCosts[]
 }
 
 model Cow {
-  id        String   @id @default(uuid())
+  id        String      @id @default(uuid())
   name      String
-  owner     User     @relation(fields: [userId], references: [id])
+  owner     User        @relation(fields: [userId], references: [id])
   race      CowRace
   birthDate DateTime
   userId    String
+  updates   CowUpdate[]
 }
 
 model Goat {
-  id        String   @id @default(uuid())
+  id        String       @id @default(uuid())
   name      String
-  owner     User     @relation(fields: [userId], references: [id])
+  owner     User         @relation(fields: [userId], references: [id])
   race      GoatRace
   birthDate DateTime
   userId    String
+  updates   GoatUpdate[]
+}
+
+model GoatUpdate {
+  id           String   @id @default(uuid())
+  date         DateTime
+  sick         Boolean
+  milkQuantity Float
+  Goat         Goat     @relation(fields: [goatId], references: [id])
+  goatId       String
+  User         User     @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model CowUpdate {
+  id           String   @id @default(uuid())
+  date         DateTime
+  sick         Boolean
+  milkQuantity Float
+  Cow          Cow      @relation(fields: [cowId], references: [id])
+  cowId        String
+  User         User     @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model DailyCosts {
+  id         String   @id @default(uuid())
+  date       DateTime
+  laborCosts Float
+  feedCosts  Float
+  User       User     @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 enum Role {
@@ -45,6 +81,7 @@ enum CowRace {
   JERSEY
   GIR
   GIROLANDO
+  MESTICA
 }
 
 enum GoatRace {
@@ -52,4 +89,5 @@ enum GoatRace {
   SAANEN
   ALPINA
   ANGLO
+  MESTICA
 }
