@@ -8,5 +8,5 @@ export interface UsersRepository {
   findById(id: string): Promise<User | null>;
   findAll(): Promise<User[]>;
   findByEmail(email: string): Promise<User | null>;
-  deleteById(id: string): void;
+  deleteById(id: string): Promise<void>;
 }

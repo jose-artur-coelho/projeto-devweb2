@@ -8,19 +8,16 @@ import { authorize } from '../middlewares/authorize.middleware';
 
 const usersRoutes = express.Router();
 
+usersRoutes.get('/user/me', authenticate, usersController.retrieveMe);
 usersRoutes.get('/:id', authenticate, usersController.retrieve);
-
 usersRoutes.get('/', authenticate, authorize, usersController.retrieveAll);
-
 usersRoutes.post('/', validateData(createUserSchema), usersController.create);
-
 usersRoutes.put(
-  '/',
+  '/me',
   validateData(updateUserSchema),
   authenticate,
-  usersController.update
+  usersController.updateMe
 );
-
-usersRoutes.delete('/', authenticate, usersController.delete);
+usersRoutes.delete('/me', authenticate, usersController.deleteMe);
 
 export default usersRoutes;

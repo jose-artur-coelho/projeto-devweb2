@@ -30,6 +30,58 @@ export class UsersController {
     return res.status(200).json(users);
   };
 
+  retrieveMe = async (req: Request, res: Response) => {
+    try {
+      const id = req.user?.id;
+
+      if (!id) {
+        return res.status(401).json({ error: 'Usuário não autenticado' });
+      }
+
+      const user = await this.usersService.find(id);
+      return res.status(200).json(user);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Erro desconhecido';
+      return res.status(400).json({ error: errorMessage });
+    }
+  };
+
+  updateMe = async (req: Request, res: Response) => {
+    try {
+      const id = req.user?.id;
+      const newData = req.body;
+
+      if (!id) {
+        return res.status(401).json({ error: 'Usuário não autenticado' });
+      }
+
+      const updatedUser = await this.usersService.update(id, newData);
+      return res.status(200).json(updatedUser);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Erro desconhecido';
+      return res.status(400).json({ error: errorMessage });
+    }
+  };
+
+  deleteMe = async (req: Request, res: Response) => {
+    try {
+      const id = req.user?.id;
+
+      if (!id) {
+        return res.status(401).json({ error: 'Usuário não autenticado' });
+      }
+
+      await this.usersService.delete(id);
+      return res.status(204).send();
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Erro desconhecido';
+      return res.status(400).json({ error: errorMessage });
+    }
+  };
+
   update = async (req: Request, res: Response) => {
     try {
       const id = req.user?.id;
