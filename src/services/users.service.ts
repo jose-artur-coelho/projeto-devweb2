@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   async update(id: string, dto: UpdateUserDTO) {
-    const user = this.usersRepository.findById(id);
+    const user = await this.usersRepository.findById(id);
     if (!user) {
       throw new Error('Usuário não encontrado.');
     }
@@ -51,6 +51,6 @@ export class UsersService {
   }
 
   async delete(id: string) {
-    this.usersRepository.deleteById(id);
+    await this.usersRepository.deleteById(id);
   }
 }

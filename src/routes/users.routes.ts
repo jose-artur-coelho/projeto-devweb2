@@ -8,8 +8,8 @@ import { authorize } from '../middlewares/authorize.middleware';
 
 const usersRoutes = express.Router();
 
-usersRoutes.get('/user/me', authenticate, usersController.retrieveMe);
-usersRoutes.get('/:id', authenticate, usersController.retrieve);
+usersRoutes.get('/me', authenticate, usersController.retrieveMe);
+usersRoutes.get('/:id', authenticate, authorize, usersController.retrieve);
 usersRoutes.get('/', authenticate, authorize, usersController.retrieveAll);
 usersRoutes.post('/', validateData(createUserSchema), usersController.create);
 usersRoutes.put(
